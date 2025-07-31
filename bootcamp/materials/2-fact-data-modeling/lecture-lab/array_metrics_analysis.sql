@@ -7,7 +7,7 @@ WITH daily_aggregate AS (
         DATE(event_time) AS date,
         COUNT(1) AS num_site_hits
     FROM events
-    WHERE DATE(event_time) = DATE('2023-01-01')
+    WHERE DATE(event_time) = DATE('2023-01-04')
     AND user_id IS NOT NULL
     GROUP BY user_id, DATE(event_time)
 ),
@@ -38,6 +38,8 @@ ON da.user_id = ya.user_id
 ON CONFLICT (user_id, month_start, metric_name)
 DO 
     UPDATE SET metric_array = EXCLUDED.metric_array;
+
+SELECT * FROM array_metrics;
 
 -- Uncomment and run the following query to verify the cardinality of metric_array
 -- SELECT cardinality(metric_array), COUNT(1)
